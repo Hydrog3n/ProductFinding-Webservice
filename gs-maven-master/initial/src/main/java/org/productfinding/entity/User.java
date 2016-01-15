@@ -1,14 +1,12 @@
 package org.productfinding.entity;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 /**
  * Created by alehmann on 15/01/2016.
  */
+@Entity
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
