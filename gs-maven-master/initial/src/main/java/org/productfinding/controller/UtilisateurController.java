@@ -27,6 +27,18 @@ public class UtilisateurController {
         return utilisateurRepository.findOne(id);
     }
 
+    @RequestMapping(value="/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public Utilisateur create(@RequestBody Utilisateur user) {
+        return utilisateurRepository.save(user);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public Iterable<Utilisateur> create(@RequestBody Iterable<Utilisateur> users) {
+        return utilisateurRepository.save(users);
+    }
+
     @RequestMapping(value="/{id}", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @Transactional
@@ -38,11 +50,11 @@ public class UtilisateurController {
         if (utilisateur.getPassword() != null) {
             databaseUtilisateur.setPassword(utilisateur.getPassword());
         }
-        if (utilisateur.getFirstName() != null) {
-            databaseUtilisateur.setFirstName(utilisateur.getFirstName());
+        if (utilisateur.getFirstname() != null) {
+            databaseUtilisateur.setFirstname(utilisateur.getFirstname());
         }
-        if (utilisateur.getLastName() != null) {
-            databaseUtilisateur.setLastName(utilisateur.getLastName());
+        if (utilisateur.getLastname() != null) {
+            databaseUtilisateur.setLastname(utilisateur.getLastname());
         }
         return utilisateurRepository.save(databaseUtilisateur);
     }
