@@ -1,15 +1,12 @@
 package org.productfinding.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Produit {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(nullable = false)
@@ -27,6 +24,10 @@ public class Produit {
     }
 
     public void setId(Long newId) { this.id = newId; }
+
+    public Long getId() {
+        return id;
+    }
 
     public void setDescriptif(String newDescriptif) { this.descriptif = newDescriptif; }
 

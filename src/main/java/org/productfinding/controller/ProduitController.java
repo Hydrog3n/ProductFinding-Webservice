@@ -14,64 +14,64 @@ import javax.websocket.server.PathParam;
 public class ProduitController {
 
     @Autowired
-    private ProduitRepository repositoy;
+    private ProduitRepository produitRepository;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public Iterable<Produit> getAll() {
-        return repositoy.findAll();
+        return produitRepository.findAll();
     }
 
     @RequestMapping(value="/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public Produit get(@PathVariable("id") Long id) {
-        return repositoy.findOne(id);
+        return produitRepository.findOne(id);
     }
 
     @RequestMapping(value="/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Produit create(@RequestBody Produit user) {
-        return repositoy.save(user);
+    public Produit create(@RequestBody Produit produit) {
+        return produitRepository.save(produit);
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Iterable<Produit> create(@RequestBody Iterable<Produit> user) {
-        return repositoy.save(user);
+    public Iterable<Produit> create(@RequestBody Iterable<Produit> produit) {
+        return produitRepository.save(produit);
     }
 
     @RequestMapping(value="/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Produit update(@PathVariable("id") Long id, @RequestBody Produit user) {
-        user.setId(id);
-        return repositoy.save(user);
+    public Produit update(@PathVariable("id") Long id, @RequestBody Produit produit) {
+        produit.setId(id);
+        return produitRepository.save(produit);
     }
 
     @RequestMapping(value="/{id}", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @Transactional
     public Produit patch(@PathVariable("id") Long id, @RequestBody Produit produit) {
-        Produit databaseAddress  = repositoy.findOne(id);
+        Produit databaseAddress  = produitRepository.findOne(id);
         if (produit.getDescriptif() != null) {
             databaseAddress.setDescriptif(produit.getDescriptif());
         }
         if (produit.getMarque() != null) {
             databaseAddress.setMarque(produit.getMarque());
         }
-        return repositoy.save(databaseAddress);
+        return produitRepository.save(databaseAddress);
     }
 
     @RequestMapping(value="/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathParam("id") Long id) {
-        repositoy.delete(id);
+        produitRepository.delete(id);
     }
 
     public ProduitRepository getRepositoy() {
-        return repositoy;
+        return produitRepository;
     }
 
     public void setRepositoy(ProduitRepository repositoy) {
-        this.repositoy = repositoy;
+        this.produitRepository = repositoy;
     }
 }
