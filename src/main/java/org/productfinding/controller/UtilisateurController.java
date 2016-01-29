@@ -1,5 +1,8 @@
 package org.productfinding.controller;
 
+
+import com.google.common.base.Charsets;
+import com.google.common.hash.*;
 import org.productfinding.entity.Utilisateur;
 import org.productfinding.repository.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,12 @@ public class UtilisateurController {
     @RequestMapping(value="/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Utilisateur create(@RequestBody Utilisateur user) {
+        String pwd = user.getPassword();
+        HashFunction hf = Hashing.sha1();
+        HashCode hc = hf.newHasher()
+                .putString(pwd, Charsets.UTF_8)
+                .hash();
+        user.setPassword(hc.toString());
         return utilisateurRepository.save(user);
     }
 
