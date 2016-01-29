@@ -9,11 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
 
-/**
- * Created by fteychene on 1/15/16.
- */
 @RestController
-@RequestMapping("/adress")
+@RequestMapping("/produit")
 public class ProduitController {
 
     @Autowired
