@@ -15,7 +15,6 @@ public class Utilisateur {
     private String firstname;
     private String lastname;
 
-
     public String getAddresse() {
 
         return addresse;
