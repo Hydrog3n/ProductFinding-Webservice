@@ -1,12 +1,15 @@
 package org.productfinding.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Produit {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -14,6 +17,18 @@ public class Produit {
 
     @Column(nullable = false)
     private String marque;
+
+    @ManyToMany(mappedBy = "listProduit")
+    @JsonIgnore
+    private List<Magasin> listMagasin;
+
+    public List<Magasin> getListMagasin() {
+        return listMagasin;
+    }
+
+    public void setListMagasin(List<Magasin> listMagasin) {
+        this.listMagasin = listMagasin;
+    }
 
     public String getDescriptif() {
         return this.descriptif;

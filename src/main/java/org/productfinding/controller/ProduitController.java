@@ -1,5 +1,7 @@
 package org.productfinding.controller;
+import org.productfinding.entity.Magasin;
 import org.productfinding.entity.Produit;
+import org.productfinding.repository.MagasinRepository;
 import org.productfinding.repository.ProduitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,8 @@ public class ProduitController {
 
     @Autowired
     private ProduitRepository produitRepository;
+    @Autowired
+    private MagasinRepository magasinRepository;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -31,6 +35,9 @@ public class ProduitController {
     @RequestMapping(value="/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Produit create(@RequestBody Produit produit) {
+        for (Magasin magasin : produit.getListMagasin()) {
+            magasinRepository.save(magasin);
+        }
         return produitRepository.save(produit);
     }
 
@@ -67,11 +74,11 @@ public class ProduitController {
         produitRepository.delete(id);
     }
 
-    public ProduitRepository getRepositoy() {
+    public ProduitRepository getRepository() {
         return produitRepository;
     }
 
-    public void setRepositoy(ProduitRepository repositoy) {
-        this.produitRepository = repositoy;
+    public void setRepository(ProduitRepository repository) {
+        this.produitRepository = repository;
     }
 }

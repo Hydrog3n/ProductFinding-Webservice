@@ -1,7 +1,9 @@
 package org.productfinding.controller;
 
 import org.productfinding.entity.Magasin;
+import org.productfinding.entity.Produit;
 import org.productfinding.repository.MagasinRepository;
+import org.productfinding.repository.ProduitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -9,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -16,6 +20,8 @@ import javax.websocket.server.PathParam;
 public class MagasinControler {
     @Autowired
     private MagasinRepository repository;
+    @Autowired
+    private ProduitRepository produitRepository;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -32,6 +38,10 @@ public class MagasinControler {
     @RequestMapping(value="/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Magasin create(@RequestBody Magasin magasin) {
+        for (Produit produit : magasin.getListProduit()) {
+            produitRepository.save(produit);
+
+        }
         return repository.save(magasin);
     }
 
@@ -74,11 +84,19 @@ public class MagasinControler {
         repository.delete(id);
     }
 
-    public MagasinRepository getRepositoy() {
+    @RequestMapping(value="/produit/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public Iterable<Produit> getAllProduit(@PathVariable("id") Long id) {
+        Magasin magasin = repository.findOne(id);
+
+        return magasin.getListProduit();
+    }
+
+    public MagasinRepository getRepository() {
         return repository;
     }
 
-    public void setRepositoy(MagasinRepository repository) {
+    public void setRepository(MagasinRepository repository) {
         this.repository = repository;
     }
 

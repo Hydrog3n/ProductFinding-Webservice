@@ -1,12 +1,13 @@
 package org.productfinding.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Magasin {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -20,6 +21,18 @@ public class Magasin {
 
     @Column(nullable = false)
     private String cp;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Produit> listProduit;
+
+    public List<Produit> getListProduit() {
+
+        return listProduit;
+    }
+
+    public void setListProduit(List<Produit> listProduit) {
+        this.listProduit = listProduit;
+    }
 
     public Long getId() {
         return id;
