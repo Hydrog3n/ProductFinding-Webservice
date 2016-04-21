@@ -2,7 +2,9 @@ package org.productfinding.controller;
 
 import org.productfinding.entity.Magasin;
 import org.productfinding.entity.Produit;
+import org.productfinding.entity.ProduitInMagasin;
 import org.productfinding.repository.MagasinRepository;
+import org.productfinding.repository.ProduitInMagasinRepository;
 import org.productfinding.repository.ProduitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +25,8 @@ public class MagasinControler {
     private MagasinRepository repository;
     @Autowired
     private ProduitRepository produitRepository;
+    @Autowired
+    private ProduitInMagasinRepository produitInMagasinRepository;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -38,11 +43,17 @@ public class MagasinControler {
     @RequestMapping(value="/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Magasin create(@RequestBody Magasin magasin) {
-        for (Produit produit : magasin.getListProduit()) {
-            produitRepository.save(produit);
-
+        repository.save(magasin);
+        List<ProduitInMagasin> listAsso = magasin.getListProduit();
+        if (listAsso != null) {
+            for (ProduitInMagasin produitInMag : listAsso) {
+                produitInMag.getId().setMagasin(magasin);
+                produitRepository.save(produitInMag.getId().getProduit());
+                produitInMagasinRepository.save(produitInMag);
+                produitInMag.getId().setMagasin(null);
+            }
         }
-        return repository.save(magasin);
+        return magasin;
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -84,12 +95,15 @@ public class MagasinControler {
         repository.delete(id);
     }
 
-    @RequestMapping(value="/produit/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/produits/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public Iterable<Produit> getAllProduit(@PathVariable("id") Long id) {
         Magasin magasin = repository.findOne(id);
-
-        return magasin.getListProduit();
+        List<Produit> listProduit = new ArrayList<Produit>();
+        for (ProduitInMagasin prodInMagasin : magasin.getListProduit()) {
+            listProduit.add(prodInMagasin.getId().getProduit());
+        }
+        return listProduit;
     }
 
     public MagasinRepository getRepository() {

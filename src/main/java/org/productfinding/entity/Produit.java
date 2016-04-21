@@ -18,15 +18,15 @@ public class Produit {
     @Column(nullable = false)
     private String marque;
 
-    @ManyToMany(mappedBy = "listProduit")
+    @OneToMany(mappedBy = "id.produit")
     @JsonIgnore
-    private List<Magasin> listMagasin;
+    private List<ProduitInMagasin> listMagasin;
 
-    public List<Magasin> getListMagasin() {
+    public List<ProduitInMagasin> getListMagasin() {
         return listMagasin;
     }
 
-    public void setListMagasin(List<Magasin> listMagasin) {
+    public void setListMagasin(List<ProduitInMagasin> listMagasin) {
         this.listMagasin = listMagasin;
     }
 

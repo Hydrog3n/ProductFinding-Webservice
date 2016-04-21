@@ -1,5 +1,7 @@
 package org.productfinding.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -22,15 +24,15 @@ public class Magasin {
     @Column(nullable = false)
     private String cp;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Produit> listProduit;
+    @OneToMany(mappedBy = "id.magasin", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<ProduitInMagasin> listProduit;
 
-    public List<Produit> getListProduit() {
-
+    public List<ProduitInMagasin> getListProduit() {
         return listProduit;
     }
 
-    public void setListProduit(List<Produit> listProduit) {
+    public void setListProduit(List<ProduitInMagasin> listProduit) {
         this.listProduit = listProduit;
     }
 

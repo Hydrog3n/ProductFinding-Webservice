@@ -1,7 +1,9 @@
 package org.productfinding.controller;
 import org.productfinding.entity.Magasin;
 import org.productfinding.entity.Produit;
+import org.productfinding.entity.ProduitInMagasin;
 import org.productfinding.repository.MagasinRepository;
+import org.productfinding.repository.ProduitInMagasinRepository;
 import org.productfinding.repository.ProduitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
+import java.util.List;
 
 @RestController
 @RequestMapping("/produit")
@@ -19,6 +22,8 @@ public class ProduitController {
     private ProduitRepository produitRepository;
     @Autowired
     private MagasinRepository magasinRepository;
+    @Autowired
+    private ProduitInMagasinRepository produitInMagasinRepository;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -35,9 +40,15 @@ public class ProduitController {
     @RequestMapping(value="/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Produit create(@RequestBody Produit produit) {
-        for (Magasin magasin : produit.getListMagasin()) {
-            magasinRepository.save(magasin);
+        List<ProduitInMagasin> listAsso = produit.getListMagasin();
+
+        if (listAsso != null) {
+            for (ProduitInMagasin produitInMag : listAsso) {
+                magasinRepository.save(produitInMag.getId().getMagasin());
+                produitInMagasinRepository.save(produitInMag);
+            }
         }
+
         return produitRepository.save(produit);
     }
 
