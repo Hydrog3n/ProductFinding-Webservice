@@ -18,6 +18,9 @@ public class Produit {
     @Column(nullable = false)
     private String marque;
 
+    @Column(nullable = false)
+    private String imageUrl;
+
     @OneToMany(mappedBy = "id.produit", cascade = CascadeType.ALL)
     private List<ProduitInMagasin> listMagasin;
 
@@ -47,6 +50,14 @@ public class Produit {
 
     public void setMarque(String newMarque) { this.marque = newMarque; }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -56,7 +67,9 @@ public class Produit {
 
         if (id != null ? !id.equals(produit.id) : produit.id != null) return false;
         if (descriptif != null ? !descriptif.equals(produit.descriptif) : produit.descriptif != null) return false;
-        return marque != null ? marque.equals(produit.marque) : produit.marque == null;
+        if (marque != null ? !marque.equals(produit.marque) : produit.marque != null) return false;
+        if (imageUrl != null ? !imageUrl.equals(produit.imageUrl) : produit.imageUrl != null) return false;
+        return listMagasin != null ? listMagasin.equals(produit.listMagasin) : produit.listMagasin == null;
 
     }
 
@@ -65,6 +78,8 @@ public class Produit {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (descriptif != null ? descriptif.hashCode() : 0);
         result = 31 * result + (marque != null ? marque.hashCode() : 0);
+        result = 31 * result + (imageUrl != null ? imageUrl.hashCode() : 0);
+        result = 31 * result + (listMagasin != null ? listMagasin.hashCode() : 0);
         return result;
     }
 }
