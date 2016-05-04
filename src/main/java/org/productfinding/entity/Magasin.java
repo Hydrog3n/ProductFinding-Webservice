@@ -31,6 +31,14 @@ public class Magasin {
     @JsonIgnore
     private List<ProduitInMagasin> listProduit;
 
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
+    }
+
     public List<ProduitInMagasin> getListProduit() {
         return listProduit;
     }
