@@ -18,7 +18,7 @@ public class Produit {
     @Column(nullable = false)
     private String marque;
 
-    @Column(nullable = false)
+    @Column
     private String imageUrl;
 
     @OneToMany(mappedBy = "id.produit", cascade = CascadeType.ALL)
