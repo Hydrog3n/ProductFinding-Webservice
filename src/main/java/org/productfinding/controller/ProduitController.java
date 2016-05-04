@@ -52,6 +52,12 @@ public class ProduitController {
         return produitRepository.save(produit);
     }
 
+    @RequestMapping(value="/link", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProduitInMagasin create(@RequestBody ProduitInMagasin produitInMagasin) {
+        return produitInMagasinRepository.save(produitInMagasin);
+    }
+
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Iterable<Produit> create(@RequestBody Iterable<Produit> produit) {

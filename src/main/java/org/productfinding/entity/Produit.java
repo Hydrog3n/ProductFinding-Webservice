@@ -18,8 +18,7 @@ public class Produit {
     @Column(nullable = false)
     private String marque;
 
-    @OneToMany(mappedBy = "id.produit")
-    @JsonIgnore
+    @OneToMany(mappedBy = "id.produit", cascade = CascadeType.ALL)
     private List<ProduitInMagasin> listMagasin;
 
     public List<ProduitInMagasin> getListMagasin() {
