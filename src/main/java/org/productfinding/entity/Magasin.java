@@ -24,6 +24,9 @@ public class Magasin {
     @Column(nullable = false)
     private String cp;
 
+    @Column(nullable = false)
+    private String logoUrl;
+
     @OneToMany(mappedBy = "id.magasin", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<ProduitInMagasin> listProduit;
