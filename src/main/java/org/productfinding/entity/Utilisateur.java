@@ -16,17 +16,6 @@ public class Utilisateur {
     private String firstname;
     private String lastname;
 
-    public String getAddresse() {
-
-        return addresse;
-    }
-
-    public void setAddresse(String addresse) {
-        this.addresse = addresse;
-    }
-
-    private String addresse;
-
     public Long getId() {
         return id;
     }
