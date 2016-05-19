@@ -1,5 +1,6 @@
 package org.productfinding.controller;
 
+import org.productfinding.Application;
 import org.productfinding.entity.Magasin;
 import org.productfinding.entity.Produit;
 import org.productfinding.entity.ProduitInMagasin;
@@ -10,9 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.websocket.server.PathParam;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,10 +47,11 @@ public class MagasinControler {
         return repository.findOne(id);
     }
 
-    @RequestMapping(value="/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Magasin create(@RequestBody Magasin magasin) {
         repository.save(magasin);
+
         List<ProduitInMagasin> listAsso = magasin.getListProduit();
         if (listAsso != null) {
             for (ProduitInMagasin produitInMag : listAsso) {
@@ -52,6 +60,31 @@ public class MagasinControler {
                 produitInMagasinRepository.save(produitInMag);
                 produitInMag.getId().setMagasin(null);
             }
+        }
+        return magasin;
+    }
+
+    @RequestMapping(value="/{id}/logo", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public Magasin update(@PathParam("id") Long id, @RequestParam("file") MultipartFile file) {
+        Magasin magasin = repository.findOne(id);
+        try {
+            // Get the filename and build the local file path (be sure that the
+            // application have write permissions on such directory)
+            String filename = magasin.getId() + "_" + file.getOriginalFilename();
+            String directory = "public/images";
+            String filepath = Paths.get(directory, filename).toString();
+
+            // Save the file locally
+            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filepath)));
+            stream.write(file.getBytes());
+            stream.close();
+
+            magasin.setLogoUrl(filepath);
+            repository.save(magasin);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         return magasin;
     }
