@@ -6,14 +6,21 @@ import com.google.common.hash.*;
 import org.productfinding.entity.Utilisateur;
 import org.productfinding.repository.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping("/utilisateur")
 public class UtilisateurController {
+
+    @Value("${my.salt}")
+    String _salt;
 
     @Autowired
     private UtilisateurRepository utilisateurRepository;
@@ -30,16 +37,28 @@ public class UtilisateurController {
         return utilisateurRepository.findOne(id);
     }
 
-    @RequestMapping(value="/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/new", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Utilisateur create(@RequestBody Utilisateur user) {
         String pwd = user.getPassword();
-        HashFunction hf = Hashing.sha1();
-        HashCode hc = hf.newHasher()
-                .putString(pwd, Charsets.UTF_8)
-                .hash();
-        user.setPassword(hc.toString());
+
+        user.setPassword(this.hashPassword(pwd));
         return utilisateurRepository.save(user);
+    }
+
+    @RequestMapping(value="/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public Utilisateur post(@RequestBody ArrayList<String> loggin) {
+        Utilisateur user = new Utilisateur();
+
+        ArrayList<Utilisateur> listUtilisateur = (ArrayList<Utilisateur>) utilisateurRepository.findAll();
+        for (Utilisateur u : listUtilisateur) {
+            if (u.getUsername().equals(loggin.get(0)) && u.getPassword().equals(this.hashPassword(loggin.get(1)))) {
+                user = u;
+                break;
+            }
+        }
+        return user;
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -72,6 +91,16 @@ public class UtilisateurController {
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable("id") Long id) {
         utilisateurRepository.delete(id);
+    }
+
+    private String hashPassword(String pwd) {
+
+        HashFunction hf = Hashing.sha1();
+        HashCode hc = hf.newHasher()
+                .putString(pwd, Charsets.UTF_8)
+                .putString(_salt, Charsets.UTF_8)
+                .hash();
+        return hc.toString();
     }
 
 }
