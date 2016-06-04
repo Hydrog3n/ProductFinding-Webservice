@@ -40,10 +40,17 @@ public class UtilisateurController {
     @RequestMapping(value="/new", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Utilisateur create(@RequestBody Utilisateur user) {
-        String pwd = user.getPassword();
+        Utilisateur checkUser = utilisateurRepository.findByUsername(user.getUsername());
+        if (checkUser != null) {
+            return null;
+        } else {
+            String pwd = user.getPassword();
 
-        user.setPassword(this.hashPassword(pwd));
-        return utilisateurRepository.save(user);
+            user.setPassword(this.hashPassword(pwd));
+
+
+            return utilisateurRepository.save(user);
+        }
     }
 
     @RequestMapping(value="/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
