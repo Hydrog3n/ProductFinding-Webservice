@@ -1,4 +1,4 @@
-package org.productfinding.repository;
+package org.productfinding.repository.Utilisateur;
 
 import org.productfinding.entity.Utilisateur;
 import org.springframework.data.repository.CrudRepository;
