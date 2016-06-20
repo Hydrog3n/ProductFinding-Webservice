@@ -23,9 +23,6 @@ public class ProduitInMagasin {
     @Column
     private String longitude;
 
-    @Column
-    private String ean;
-
     @Data
     @Embeddable
     public static class ProduitMagasinId implements Serializable {

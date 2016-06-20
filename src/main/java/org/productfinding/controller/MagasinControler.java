@@ -1,6 +1,5 @@
 package org.productfinding.controller;
 
-import org.productfinding.Application;
 import org.productfinding.entity.Magasin;
 import org.productfinding.entity.Produit;
 import org.productfinding.entity.ProduitInMagasin;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +20,6 @@ import java.io.FileOutputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -128,7 +125,7 @@ public class MagasinControler {
         repository.delete(id);
     }
 
-    @RequestMapping(value="/produits/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/{id}/produits", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public Iterable<Produit> getAllProduit(@PathVariable("id") Long id) {
         Magasin magasin = repository.findOne(id);

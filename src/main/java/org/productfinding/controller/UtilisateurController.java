@@ -4,7 +4,7 @@ package org.productfinding.controller;
 import com.google.common.base.Charsets;
 import com.google.common.hash.*;
 import org.productfinding.entity.Utilisateur;
-import org.productfinding.repository.Utilisateur.UtilisateurRepository;
+import org.productfinding.repository.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;

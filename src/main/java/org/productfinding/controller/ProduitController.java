@@ -1,5 +1,4 @@
 package org.productfinding.controller;
-import org.productfinding.entity.Magasin;
 import org.productfinding.entity.Produit;
 import org.productfinding.entity.ProduitInMagasin;
 import org.productfinding.repository.MagasinRepository;
@@ -34,6 +33,7 @@ public class ProduitController {
     @RequestMapping(value="/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public Produit get(@PathVariable("id") Long id) {
+        Produit p = produitRepository.findOne(id);
         return produitRepository.findOne(id);
     }
 
@@ -50,6 +50,13 @@ public class ProduitController {
         }
 
         return produitRepository.save(produit);
+    }
+
+    @RequestMapping(value="/magasin/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.TEXT_PLAIN_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Produit> get(@PathVariable("id") Long id_mag, @RequestBody String search) {
+        List<Produit> list =  produitRepository.findByDescriptif(search, id_mag);
+        return list;
     }
 
     @RequestMapping(value="/link", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

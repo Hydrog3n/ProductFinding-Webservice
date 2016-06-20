@@ -23,6 +23,10 @@ public class Produit {
     @Column
     private String imageUrl;
 
+    @Column
+    private String ean;
+
     @OneToMany(mappedBy = "id.produit", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<ProduitInMagasin> listMagasin;
 }
