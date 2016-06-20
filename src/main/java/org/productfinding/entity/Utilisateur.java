@@ -18,4 +18,7 @@ public class Utilisateur {
     private String password;
     private String firstname;
     private String lastname;
+
+    @Column(nullable = false)
+    private String token;
 }

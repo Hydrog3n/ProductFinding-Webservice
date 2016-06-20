@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @RestController
@@ -46,6 +47,7 @@ public class UtilisateurController {
             String pwd = user.getPassword();
 
             user.setPassword(this.hashPassword(pwd));
+            user.setToken(this.hashToken(pwd));
 
 
             return utilisateurRepository.save(user);
@@ -107,6 +109,12 @@ public class UtilisateurController {
                 .putString(_salt, Charsets.UTF_8)
                 .hash();
         return hc.toString();
+    }
+
+
+    private String hashToken(String pwd) {
+        String hash = this.hashPassword(pwd);
+        return this.hashPassword(hash + LocalDateTime.now());
     }
 
 }
