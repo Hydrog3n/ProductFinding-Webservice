@@ -59,6 +59,13 @@ public class ProduitController {
         return list;
     }
 
+    @RequestMapping(value="/ean", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.TEXT_PLAIN_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public Produit get(@RequestBody String ean) {
+        Produit p =  produitRepository.findOneByEan(ean);
+        return p;
+    }
+
     @RequestMapping(value="/link", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ProduitInMagasin create(@RequestBody ProduitInMagasin produitInMagasin) {
