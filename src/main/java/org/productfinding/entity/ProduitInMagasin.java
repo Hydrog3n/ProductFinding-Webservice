@@ -1,8 +1,6 @@
 package org.productfinding.entity;
 
 import lombok.Data;
-import org.hibernate.id.Assigned;
-import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 import java.io.Serializable;
