@@ -37,6 +37,12 @@ public class UtilisateurController {
         return utilisateurRepository.findOne(id);
     }
 
+    @RequestMapping(value="/{token}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public Utilisateur get(@PathVariable("token") String token) {
+        return utilisateurRepository.findOneByToken(token);
+    }
+
     @RequestMapping(value="/new", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Utilisateur create(@RequestBody Utilisateur user) {

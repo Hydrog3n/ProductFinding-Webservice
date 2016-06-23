@@ -7,4 +7,5 @@ public interface UtilisateurRepository extends CrudRepository<Utilisateur, Long>
 
     public Utilisateur findByUsername(String username);
 
+    public Utilisateur findOneByToken(String token);
 }
