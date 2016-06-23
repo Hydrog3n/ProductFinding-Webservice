@@ -31,12 +31,6 @@ public class UtilisateurController {
         return utilisateurRepository.findAll();
     }
 
-    @RequestMapping(value="/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public Utilisateur get(@PathVariable("id") Long id) {
-        return utilisateurRepository.findOne(id);
-    }
-
     @RequestMapping(value="/{token}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public Utilisateur get(@PathVariable("token") String token) {
