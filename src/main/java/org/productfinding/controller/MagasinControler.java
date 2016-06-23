@@ -131,7 +131,9 @@ public class MagasinControler {
         Magasin magasin = repository.findOne(id);
         List<Produit> listProduit = new ArrayList<Produit>();
         for (ProduitInMagasin prodInMagasin : magasin.getListProduit()) {
-            listProduit.add(prodInMagasin.getId().getProduit());
+            Produit p = prodInMagasin.getId().getProduit();
+            p.setPrix(prodInMagasin.getPrix());
+            listProduit.add(p);
         }
         return listProduit;
     }
