@@ -16,10 +16,10 @@ public class ProduitInMagasin {
     private Float prix;
 
     @Column
-    private String lattitude;
+    private double lattitude;
 
     @Column
-    private String longitude;
+    private double longitude;
 
     @Data
     @Embeddable

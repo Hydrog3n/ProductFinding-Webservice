@@ -133,6 +133,8 @@ public class MagasinControler {
         for (ProduitInMagasin prodInMagasin : magasin.getListProduit()) {
             Produit p = prodInMagasin.getId().getProduit();
             p.setPrix(prodInMagasin.getPrix());
+            p.setLongitude(prodInMagasin.getLongitude());
+            p.setLatitude(prodInMagasin.getLongitude());
             listProduit.add(p);
         }
         return listProduit;

@@ -25,9 +25,15 @@ public class Produit {
 
     @Column
     private String ean;
-    
+
     @Transient
     private float prix;
+
+    @Transient
+    private double longitude;
+
+    @Transient
+    private double latitude;
 
     @OneToMany(mappedBy = "id.produit", cascade = CascadeType.ALL)
     @JsonIgnore
