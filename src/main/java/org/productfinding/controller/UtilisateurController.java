@@ -84,7 +84,7 @@ public class UtilisateurController {
             databaseUtilisateur.setUsername(utilisateur.getUsername());
         }
         if (utilisateur.getPassword() != null) {
-            databaseUtilisateur.setPassword(utilisateur.getPassword());
+            databaseUtilisateur.setPassword(hashPassword(utilisateur.getPassword()));
         }
         if (utilisateur.getFirstname() != null) {
             databaseUtilisateur.setFirstname(utilisateur.getFirstname());
