@@ -16,7 +16,7 @@ public class ProduitInMagasin {
     private Float prix;
 
     @Column
-    private double lattitude;
+    private double latitude;
 
     @Column
     private double longitude;
